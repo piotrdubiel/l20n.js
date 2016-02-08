@@ -1,4 +1,5 @@
-(function () { 'use strict';
+(function () {
+  'use strict';
 
   function L10nError(message, id, lang) {
     this.name = 'L10nError';
@@ -738,7 +739,7 @@
   const FSI = '\u2068';
   const PDI = '\u2069';
 
-  const resolutionChain = new WeakSet();
+  const resolutionChain = new Set();
 
   function format(ctx, lang, args, entity) {
     if (typeof entity === 'string') {
@@ -1382,4 +1383,4 @@
     format
   };
 
-})();
+}());

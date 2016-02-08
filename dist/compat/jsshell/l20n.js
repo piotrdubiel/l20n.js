@@ -736,7 +736,7 @@
   var FSI = '⁨';
   var PDI = '⁩';
 
-  var resolutionChain = new WeakSet();
+  var resolutionChain = new Set();
 
   function format(ctx, lang, args, entity) {
     if (typeof entity === 'string') {

@@ -28,14 +28,9 @@
     var value = translation.value;
 
     if (typeof value === 'string') {
-      if (!reOverlay.test(value)) {
+      if (1 == 1 || !reOverlay.test(value)) {
         element.textContent = value;
-      } else {
-        var tmpl = element.ownerDocument.createElement('template');
-        tmpl.innerHTML = value;
-
-        overlay(element, tmpl.content);
-      }
+      } else {}
     }
 
     for (var key in translation.attrs) {
@@ -44,54 +39,6 @@
         element.setAttribute(attrName, translation.attrs[key]);
       }
     }
-  }
-
-  function overlay(sourceElement, translationElement) {
-    var result = translationElement.ownerDocument.createDocumentFragment();
-    var k = undefined,
-        attr = undefined;
-
-    var childElement = undefined;
-    while (childElement = translationElement.childNodes[0]) {
-      translationElement.removeChild(childElement);
-
-      if (childElement.nodeType === childElement.TEXT_NODE) {
-        result.appendChild(childElement);
-        continue;
-      }
-
-      var index = getIndexOfType(childElement);
-      var sourceChild = getNthElementOfType(sourceElement, childElement, index);
-      if (sourceChild) {
-        overlay(sourceChild, childElement);
-        result.appendChild(sourceChild);
-        continue;
-      }
-
-      if (isElementAllowed(childElement)) {
-        var sanitizedChild = childElement.ownerDocument.createElement(childElement.nodeName);
-        overlay(sanitizedChild, childElement);
-        result.appendChild(sanitizedChild);
-        continue;
-      }
-
-      result.appendChild(translationElement.ownerDocument.createTextNode(childElement.textContent));
-    }
-
-    sourceElement.textContent = '';
-    sourceElement.appendChild(result);
-
-    if (translationElement.attributes) {
-      for (k = 0, attr; attr = translationElement.attributes[k]; k++) {
-        if (isAttrAllowed(attr, sourceElement)) {
-          sourceElement.setAttribute(attr.name, attr.value);
-        }
-      }
-    }
-  }
-
-  function isElementAllowed(element) {
-    return allowed.elements.indexOf(element.tagName.toLowerCase()) !== -1;
   }
 
   function isAttrAllowed(attr, element) {
@@ -117,30 +64,6 @@
       }
     }
     return false;
-  }
-
-  function getNthElementOfType(context, element, index) {
-    var nthOfType = 0;
-    for (var i = 0, child = undefined; child = context.children[i]; i++) {
-      if (child.nodeType === child.ELEMENT_NODE && child.tagName === element.tagName) {
-        if (nthOfType === index) {
-          return child;
-        }
-        nthOfType++;
-      }
-    }
-    return null;
-  }
-
-  function getIndexOfType(element) {
-    var index = 0;
-    var child = undefined;
-    while (child = element.previousElementSibling) {
-      if (child.tagName === element.tagName) {
-        index++;
-      }
-    }
-    return index;
   }
 
   function camelCaseToDashed(string) {
@@ -277,13 +200,13 @@
     view._observe();
   }
 
-  var dom = {
+  var dom = Object.freeze({
     getResourceLinks: getResourceLinks,
     setAttributes: setAttributes,
     getAttributes: getAttributes,
     translateMutations: translateMutations,
     translateFragment: translateFragment
-  };
+  });
 
   window.L20n = {
     dom: dom

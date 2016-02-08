@@ -106,7 +106,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('release', [
-    'lint',
     'test',
     'bundle',
     'compat',
